@@ -97,11 +97,6 @@ public class  WorldScreen implements Screen {
                 return true;
             }
         });
-        System.out.println(gotoLobbyButt);
-        System.out.println(gotoLobbyButt.getLabel());
-        System.out.println(gotoLobbyButt.getLabel().getText());
-        System.out.println(gotoLobbyButt.getLabel().getX());
-        System.out.println(gotoLobbyButt.getLabel().getWidth());
 
         Group smileyMenu = new Group();
         Group auraMenu = new Group();
