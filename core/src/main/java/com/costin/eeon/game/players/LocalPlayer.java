@@ -63,6 +63,7 @@ public class  LocalPlayer extends Player {
             }
         }
         if (input.isKeyJustPressed(Input.Keys.G)) {
+            resetAuraCurrAnim();
             PlayerUpdatePacket update = new PlayerUpdatePacket();
             update.hasGodMode = !isHasGodMode();
             update.newAuraColor = LocalPlayer.getInstance().getAuraColor();

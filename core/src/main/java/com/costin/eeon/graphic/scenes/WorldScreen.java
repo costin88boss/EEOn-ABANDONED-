@@ -54,7 +54,6 @@ public class  WorldScreen implements Screen {
     private final CustomShaper debugBatch;
     private final Label debugLab, inspectToolLab;
     private boolean devMenu, inspectTool;
-    private float auraTime;
     private boolean blocksObstructed;
 
     public WorldScreen() {
@@ -294,10 +293,6 @@ public class  WorldScreen implements Screen {
         return singleton;
     }
 
-    public float getAuraTime() {
-        return auraTime;
-    }
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(HUD);
@@ -323,7 +318,6 @@ public class  WorldScreen implements Screen {
         float camH = Main.viewport.getCamera().viewportHeight;
         Vector2 MainCursor = Main.viewport.unproject(new Vector2(input.getX(), input.getY()));
         Vector2 HUDCursor = Main.hudViewport.unproject(new Vector2(input.getX(), input.getY()));
-        auraTime += Gdx.graphics.getDeltaTime();
 
         LocalPlayer.getInstance().update();
 

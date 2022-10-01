@@ -16,6 +16,9 @@ public class  Aura {
     public boolean isAnimated() {
         return animation != null;
     }
+    public boolean isStaffAura() {
+        return goldenTexture == null;
+    }
 
     public Animation<TextureRegion> getAnimation() {
         return animation;

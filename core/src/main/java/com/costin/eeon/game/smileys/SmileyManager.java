@@ -13,16 +13,23 @@ import java.util.Objects;
 public class  SmileyManager {
 
     private static SmileyManager singleton;
-    public final Texture smileys = new Texture(Gdx.files.internal("smileys/smileys.png"));
-    public final Texture auras = new Texture(Gdx.files.internal("smileys/auras.png"));
+
+    private final Texture smileys = new Texture(Gdx.files.internal("smileys/smileys.png"));
+
+    private final Texture auras = new Texture(Gdx.files.internal("smileys/auras.png"));
+    private final Texture aurasBubble = new Texture(Gdx.files.internal("smileys/auras_bubble.png"));
+    private final Texture aurasGalaxy = new Texture(Gdx.files.internal("smileys/auras_galaxy.png"));
+    private final Texture aurasStaff = new Texture(Gdx.files.internal("smileys/auras_staff.png"));
 
     private HashMap<Integer, Smiley> smileyTypes;
     private HashMap<Integer, Aura> auraShapes;
+    private HashMap<Integer, Aura> staffAuraShapes;
 
     private int smileyCount;
     private int obtainableSmileyCount;
     private int auraCount;
     private int auraImagesI;
+    private int staffAuraI;
 
     public SmileyManager() {
         smileys.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -61,10 +68,15 @@ public class  SmileyManager {
         addAuraShape(7, "Atom", auras, "aurashapeatom", 8, 0.175f);
         addAuraShape(8, "Sawblade", auras, "aurashapesawblade", 6, 0.2f);
         addAuraShape(9, "Target", auras, "aurashapetarget", 6, 0.15f);
-        //addAuraShape(10, "Bubble", aurasBubbleBMD, "aurabubble", 8, .1, false, false);
-        //addAuraShape(11, "Galaxy", aurasGalaxyBMD, "auragalaxy", 12, .15, false, false);
+        addAuraShape(10, "Bubble", aurasBubble, "aurabubble", 8, .1f, false, false);
+        addAuraShape(11, "Galaxy", aurasGalaxy, "auragalaxy", 12, .15f, false, false);
         addAuraShape(12, "Heart", auras, "aurashapeheart", 10, 0.125f);
         addAuraShape(13, "Flower", auras, "aurashapesunflower");
+
+        addStaffAuraShape(14, "Staff Orange");
+        addStaffAuraShape(15, "Staff Purple");
+        addStaffAuraShape(16, "Staff Green");
+        addStaffAuraShape(17, "Staff Blue");
     }
 
     private void generateSmileys() {
@@ -287,8 +299,32 @@ public class  SmileyManager {
         //else ...
     }
 
+    private void addStaffAuraShape(int id, String name) {
+        auraCount++;
+        Aura aura = new Aura();
+        aura.texture = new TextureRegion(aurasStaff, 64 * 6, staffAuraI * 64, 64, 64);
+        aura.goldenTexture = null;
+        TextureRegion[] textureRegions = new TextureRegion[6];
+        TextureRegion[] goldenTextureRegions = new TextureRegion[6];
+        for (int i = 0; i < 6; i++) {
+            textureRegions[i] = new TextureRegion(aurasStaff, i * 64, staffAuraI * 64, 64, 64);
+            goldenTextureRegions[i] = new TextureRegion(aurasStaff, (i+6) * 64, staffAuraI * 64, 64, 64);
+        }
+        aura.animation = new Animation<>(0.25f / 2, textureRegions);
+        aura.animation.setPlayMode(Animation.PlayMode.LOOP);
+        aura.goldenAnimation = new Animation<>(0.25f / 2, goldenTextureRegions);
+        aura.goldenAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        aura.name = name;
+        aura.vaultID = "";
+        auraShapes.put(id, aura);
+        staffAuraI++;
+    }
+
     private void addAuraShape(int id, String name, Texture originalTexture, String payVaultID, int frames, float speed, boolean createRotationAnimation, boolean generate) {
         auraCount++;
+        System.out.println(auraCount + "|" + name);
+        int tempI = auraImagesI;
+        if(!generate) auraImagesI = 0;
         Aura aura = new Aura();
         aura.texture = new TextureRegion(originalTexture, auraImagesI * 64, 0, 64, 64);
         aura.goldenTexture = new TextureRegion(originalTexture, auraImagesI * 64, 64, 64, 64);
@@ -305,10 +341,10 @@ public class  SmileyManager {
             aura.goldenAnimation = new Animation<>(speed / 2, goldenTextureRegions);
             aura.goldenAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
-        auraImagesI += frames;
+        auraImagesI = tempI;
+        if(generate) auraImagesI += frames;
         aura.name = name;
         aura.vaultID = payVaultID;
-        auraCount++;
         auraShapes.put(id, aura);
     }
 

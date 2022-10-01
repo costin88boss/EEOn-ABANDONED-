@@ -1,5 +1,6 @@
 package com.costin.eeon.game.players;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +21,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class  Player extends GameObject {
 
-    private static final float serverFixSpeed = 1;
+    private static final float serverFixSpeed = 0.1f;
     public Item<GameObject> actionCollision;
     public Item<GameObject> innerCollision;
     protected float diffX, diffY;
@@ -32,6 +33,9 @@ public class  Player extends GameObject {
     private boolean hasGodMode, isGolden;
     private String username;
     private Animation<TextureRegion> auraAnim;
+    private Animation<TextureRegion> staffAuraAnim;
+    private boolean staffAuraLoaded;
+    private float animFrameTime;
     private TextureRegion smiley, aura;
     private Color auraColor;
     private boolean rainbowMode;
@@ -54,7 +58,11 @@ public class  Player extends GameObject {
     }
 
     public void setLocalAura(int newAura) {
+        animFrameTime = 0;
+        staffAuraLoaded = false;
         Aura newAuraShape = SmileyManager.getInstance().getAuraByID(newAura);
+        if(newAuraShape.isStaffAura()) staffAuraAnim = newAuraShape.getGoldenAnimation();
+        else staffAuraAnim = null;
         if (!newAuraShape.isAnimated()) {
             if (!isGolden) aura = newAuraShape.getTexture();
             else aura = newAuraShape.getGoldenTexture();
@@ -103,6 +111,11 @@ public class  Player extends GameObject {
             auraColor.set(0, 0, 0, 0f);
             rainbowMode = true;
         }
+    }
+
+    public void resetAuraCurrAnim() {
+        staffAuraLoaded = false;
+        animFrameTime = 0;
     }
 
     public boolean isHasGodMode() {
@@ -322,8 +335,20 @@ public class  Player extends GameObject {
             }
             batch.setColor(auraColor.r, auraColor.g, auraColor.b, 1);
             if (aura != null) batch.draw(aura, x - 24, y - 24);
-            else if (auraAnim != null) {
-                batch.draw(auraAnim.getKeyFrame(WorldScreen.getInstance().getAuraTime()), x - 24, y - 24);
+            else if (auraAnim != null || staffAuraAnim != null) {
+                animFrameTime += Gdx.graphics.getDeltaTime();
+                if(staffAuraAnim != null) {
+                    if(staffAuraLoaded) {
+                        batch.draw(staffAuraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                    } else {
+                        batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                    }
+                } else batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                if(!staffAuraLoaded && auraAnim.isAnimationFinished(animFrameTime) ||
+                   staffAuraAnim != null && staffAuraAnim.isAnimationFinished(animFrameTime)) {
+                    if(staffAuraAnim != null) staffAuraLoaded = true;
+                    animFrameTime = 0;
+                }
             }
             batch.setColor(1, 1, 1, 1);
         }

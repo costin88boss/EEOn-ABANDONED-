@@ -3,6 +3,7 @@ package com.costin.eeon.game.world;
 import com.badlogic.gdx.graphics.Color;
 import com.costin.eeon.Main;
 import com.costin.eeon.game.GameObject;
+import com.costin.eeon.game.world.items.BlockManager;
 import com.dongbat.jbump.Item;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class  EEWorld {
         blocks = new ArrayList<>();
     }
 
-    public BlockGroup getGroupThatContains(int x, int y, int layer) {
+    public BlockGroup getGroupAt(int x, int y, int layer) {
         Optional<BlockGroup> group = blocks.stream().filter(blockGroup -> {
             for (int i = 0; i < blockGroup.xPositions.size(); i++) {
                 if (blockGroup.xPositions.get(i) == x
@@ -74,24 +75,9 @@ public class  EEWorld {
         return group.orElse(null);
     }
 
-    public BlockGroup getGroupUsingPos(int id, int layer, int x, int y) {
-        Optional<BlockGroup> group = blocks.stream().filter(blockGroup -> {
-            for (int i = 0; i < blockGroup.xPositions.size(); i++) {
-                if (blockGroup.blockId == id
-                        && blockGroup.layer == layer
-                        && blockGroup.xPositions.get(i) == x
-                        && blockGroup.yPositions.get(i) == y) {
-                    return true;
-                }
-            }
-            return false;
-        }).findFirst();
-        return group.orElse(null);
-    }
-
     public BlockGroup.BaseBlock getBlockAt(int x, int y, int layer) {
         BlockGroup.BaseBlock block = new BlockGroup.BaseBlock(x, y, 0, layer);
-        BlockGroup group = getGroupThatContains(x, y, layer);
+        BlockGroup group = getGroupAt(x, y, layer);
         if (group != null) {
             block.id = group.blockId;
             block.layer = group.layer;
@@ -100,7 +86,9 @@ public class  EEWorld {
     }
 
     private boolean checkAndAddBlock(int id, int layer, int x, int y) {
-        BlockGroup group = getGroupWith(id, layer);
+        if(id == 0) return false;
+        BlockGroup group;
+        group = getGroupWith(id, layer);
         if (group == null) {
             group = new BlockGroup(id, layer, new ArrayList<>(), new ArrayList<>());
             for (int i = 0; i < group.xPositions.size(); i++) {
@@ -108,7 +96,7 @@ public class  EEWorld {
             }
             blocks.add(group);
         } else {
-            if (getGroupThatContains(x, y, layer) == group) {
+            if (getGroupAt(x, y, layer) == group) {
                 return false;
             }
             group.xPositions.add(x);
@@ -123,7 +111,7 @@ public class  EEWorld {
     public boolean setBlock(BlockGroup.BaseBlock block) {
         if (block.x < 0 || block.y < 0 || block.layer < 0 || block.id < 0
                 || block.x > worldWidth || block.y > worldHeight) return false;
-        BlockGroup group = getGroupThatContains(block.x, block.y, block.layer);
+        BlockGroup group = getGroupAt(block.x, block.y, block.layer);
         if (group != null && group.blockId != block.id) {
             for (int i = 0; i < group.xPositions.size(); i++) {
                 if (group.xPositions.get(i) == block.x
@@ -132,6 +120,7 @@ public class  EEWorld {
                     group.yPositions.remove(i);
                     Item<GameObject> item = group.perBlockItems.remove(i);
                     WorldManager.getInstance().collWorld.remove(item);
+                    //System.out.println("Removed " + BlockManager.getInstance().getBlockTypeByID(i).codename);
                     break;
                 }
             }
