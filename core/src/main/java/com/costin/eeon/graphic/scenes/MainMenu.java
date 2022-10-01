@@ -17,7 +17,7 @@ import com.costin.eeon.net.GameClient;
 
 import java.util.Objects;
 
-public class MainMenu implements Screen {
+public class  MainMenu implements Screen {
     private static MainMenu singleton;
     private final Stage menu;
 

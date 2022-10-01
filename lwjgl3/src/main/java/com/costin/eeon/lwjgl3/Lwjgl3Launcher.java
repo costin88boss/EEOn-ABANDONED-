@@ -7,14 +7,14 @@ import com.costin.eeon.Main;
 /**
  * Launches the desktop (LWJGL3) application.
  */
-public class Lwjgl3Launcher {
+public class  Lwjgl3Launcher {
 
     public static void main(String[] args) {
         createApplication();
     }
 
-    private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new Main(), getDefaultConfiguration());
+    private static void createApplication() {
+        new Lwjgl3Application(new Main(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

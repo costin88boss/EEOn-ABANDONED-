@@ -20,7 +20,7 @@ import com.esotericsoftware.minlog.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoinLeaveListener implements Listener {
+public class  JoinLeaveListener implements Listener {
     @Override
     public void connected(Connection connection) {
         JoinRequestPacket packet = new JoinRequestPacket();

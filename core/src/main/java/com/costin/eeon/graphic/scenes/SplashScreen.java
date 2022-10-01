@@ -18,7 +18,7 @@ import com.costin.eeon.graphic.ScreenManager;
 import com.costin.eeon.graphic.util.Font;
 import com.costin.eeon.net.GameClient;
 
-public class SplashScreen implements Screen {
+public class  SplashScreen implements Screen {
 
     private static SplashScreen singleton;
     private final Sprite splash;

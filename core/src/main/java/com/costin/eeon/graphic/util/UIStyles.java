@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-public class UIStyles {
+public class  UIStyles {
     public static final Label.LabelStyle defLabStyle = new Label.LabelStyle() {{
         font = Font.Nokia22;
         fontColor = Color.GRAY;

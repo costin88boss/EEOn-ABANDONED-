@@ -3,7 +3,7 @@ package com.costin.eeon.game.smileys;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Aura {
+public class  Aura {
     protected Animation<TextureRegion> animation;
     protected Animation<TextureRegion> goldenAnimation;
     protected TextureRegion texture;

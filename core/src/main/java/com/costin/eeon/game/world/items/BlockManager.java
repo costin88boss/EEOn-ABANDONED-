@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 
-public class BlockManager {
+public class  BlockManager {
 
     private static BlockManager singleton;
     public final Texture blocks = new Texture(Gdx.files.internal("blocks/blocks.png"));

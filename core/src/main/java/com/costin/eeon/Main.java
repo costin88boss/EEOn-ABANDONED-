@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.costin.eeon.graphic.ScreenManager;
 import com.costin.eeon.graphic.scenes.SplashScreen;
 
-public class Main extends Game {
+public class  Main extends Game {
     public static FitViewport viewport;
     public static FitViewport hudViewport;
 

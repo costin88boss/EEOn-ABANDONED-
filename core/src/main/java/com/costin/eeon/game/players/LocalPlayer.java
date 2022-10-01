@@ -11,7 +11,7 @@ import com.costin.eeon.net.packets.player.updates.clientside.PlayerUpdatePacket;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class LocalPlayer extends Player {
+public class  LocalPlayer extends Player {
 
     private static LocalPlayer instance;
     private final Vector2 camPos = new Vector2();
@@ -38,16 +38,6 @@ public class LocalPlayer extends Player {
 
     private void move() {
         PlayerMovePacket packet = new PlayerMovePacket();
-        if (input.isKeyJustPressed(Input.Keys.R)) { // WARNING: DANGEROUS!!
-            /*
-            try {
-                GameClient.client.reconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;*/
-        }
-
         if (input.isKeyPressed(Input.Keys.D) || input.isKeyPressed(Input.Keys.RIGHT)) {
             packet.xAction = 1;
             diffX = Laws.playerForce / 100;

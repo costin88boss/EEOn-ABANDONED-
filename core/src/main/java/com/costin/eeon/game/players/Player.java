@@ -18,7 +18,7 @@ import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.esotericsoftware.kryonet.Connection;
 
-public class Player extends GameObject {
+public class  Player extends GameObject {
 
     private static final float serverFixSpeed = 1;
     public Item<GameObject> actionCollision;
@@ -152,11 +152,6 @@ public class Player extends GameObject {
             diffY = movePacket.vYDiff;
             WorldManager.getInstance().collWorld.update(this, x + 1, y + 1);
         } else {
-            if (!(this instanceof LocalPlayer)) {
-                if (movePacket.vXDiff > 0) diffX = Laws.playerForce / 100;
-                if (movePacket.vXDiff < 0) diffX = -(Laws.playerForce / 100);
-            }
-
             diffX = movePacket.vXDiff;
             if (hasGodMode) {
                 diffY = movePacket.vYDiff;

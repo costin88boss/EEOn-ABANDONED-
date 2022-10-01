@@ -46,7 +46,7 @@ import java.util.Locale;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class WorldScreen implements Screen {
+public class  WorldScreen implements Screen {
 
     private static WorldScreen singleton;
     private final Stage HUD;

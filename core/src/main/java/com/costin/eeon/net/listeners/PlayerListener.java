@@ -9,7 +9,7 @@ import com.costin.eeon.net.packets.player.updates.serverside.ServerPlyUpdatePack
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-public class PlayerListener implements Listener {
+public class  PlayerListener implements Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof ServerMovePacket) {

@@ -6,7 +6,7 @@ import com.dongbat.jbump.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockGroup {
+public class  BlockGroup {
     public final int blockId;
     public final int layer;
     public final List<Integer> xPositions;

@@ -10,7 +10,7 @@ import com.costin.eeon.game.world.items.ItemId;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class SmileyManager {
+public class  SmileyManager {
 
     private static SmileyManager singleton;
     public final Texture smileys = new Texture(Gdx.files.internal("smileys/smileys.png"));
@@ -70,7 +70,7 @@ public class SmileyManager {
     private void generateSmileys() {
         smileyTypes = new HashMap<>();
 
-        /*** Define and declare smilies ***/
+        /* Define and declare smileys */
         //Free
         addSmiley(0, "Smiley", "", smileys, "");
         addSmiley(1, "Grin", "", smileys, "");
@@ -79,7 +79,7 @@ public class SmileyManager {
         addSmiley(4, "Annoyed", "", smileys, "");
         addSmiley(5, "Sad", "", smileys, "");
 
-        //Beta / Pro smilies
+        //Beta / Pro smileys
         addSmiley(6, "Crying", "", smileys, "pro");
         addSmiley(7, "Wink", "", smileys, "pro");
         addSmiley(8, "Frustrated", "", smileys, "pro");

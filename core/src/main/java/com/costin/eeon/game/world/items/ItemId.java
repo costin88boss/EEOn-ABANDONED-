@@ -3,7 +3,7 @@ package com.costin.eeon.game.world.items;
 
 import java.util.Arrays;
 
-public class ItemId {
+public class  ItemId {
     public static final int LABEL = 1000;
 
     public static final int PIANO = 77;
@@ -689,12 +689,7 @@ public class ItemId {
     Add id's for blocks that are slippery.
     */
     public static boolean isSlippery(int itemId) {
-        switch (itemId) {
-            case ICE: {
-                return true;
-            }
-        }
-        return false;
+        return itemId == ICE;
     }
 
     public static boolean isLiquid(int id) {

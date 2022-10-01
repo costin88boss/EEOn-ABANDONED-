@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
 
-public class ImageWithID extends Image {
+public class  ImageWithID extends Image {
     public final int id;
 
     public ImageWithID(int id) {

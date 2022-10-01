@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GameClient {
+public class  GameClient {
     static final int port = 20600;
     public static Client client;
     public static Label fallbackText;
