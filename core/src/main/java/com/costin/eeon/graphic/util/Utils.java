@@ -10,3 +10,4 @@ public class Utils {
     public static final TextureRegionDrawable colorWheel = new TextureRegionDrawable(new Texture(Gdx.files.internal("color_wheel.png")));
     public static final Pixmap colorPixmap = new Pixmap(Gdx.files.internal("color_wheel.png"));
 }
+

@@ -9,4 +9,5 @@ public class RequestAcceptedPacket {
     public float x, y;
     public WorldPacket EEWorld;
     public HashMap<Integer, PlayerPacket> players;
+
 }

@@ -7,3 +7,4 @@ public class BlockType {
     public String codename;
     public String[] tags;
 }
+

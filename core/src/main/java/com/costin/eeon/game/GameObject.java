@@ -7,3 +7,4 @@ public abstract class GameObject extends Item<GameObject> {
         super();
     }
 }
+

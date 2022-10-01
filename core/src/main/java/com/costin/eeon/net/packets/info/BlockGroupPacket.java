@@ -8,3 +8,4 @@ public class BlockGroupPacket {
     public List<Integer> xPositions;
     public List<Integer> yPositions;
 }
+

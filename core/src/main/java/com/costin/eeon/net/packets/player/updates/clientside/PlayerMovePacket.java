@@ -4,4 +4,5 @@ public class PlayerMovePacket {
     public int xAction;
     public int yAction;
     public boolean spaced;
+
 }

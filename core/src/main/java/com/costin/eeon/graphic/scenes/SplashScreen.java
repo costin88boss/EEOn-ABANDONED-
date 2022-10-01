@@ -21,9 +21,10 @@ import com.costin.eeon.net.GameClient;
 public class SplashScreen implements Screen {
 
     private static SplashScreen singleton;
-    private float timer = 4f;
     private final Sprite splash;
     private final SpriteBatch batch;
+    private float timer = 4f;
+
     public SplashScreen() {
         splash = new Sprite(new Texture(Gdx.files.internal("titlescreen.png")));
         batch = new SpriteBatch();
@@ -65,8 +66,7 @@ public class SplashScreen implements Screen {
         else splash.setColor(1, 1, 1, timer);
         splash.draw(batch);
         batch.end();
-        if(timer <= -1f && !Laws.skipSplash)
-        {
+        if (timer <= -1f && !Laws.skipSplash) {
             ScreenManager.setScreen(MainMenu.getInstance());
             timer = 4f;
         } else ScreenManager.setScreen(MainMenu.getInstance());

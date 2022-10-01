@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,8 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -32,11 +31,13 @@ import com.costin.eeon.game.world.BlockGroup;
 import com.costin.eeon.game.world.WorldManager;
 import com.costin.eeon.game.world.items.BlockManager;
 import com.costin.eeon.graphic.ScreenManager;
-import com.costin.eeon.graphic.util.*;
+import com.costin.eeon.graphic.util.CustomShaper;
+import com.costin.eeon.graphic.util.ImageWithID;
+import com.costin.eeon.graphic.util.UIStyles;
+import com.costin.eeon.graphic.util.Utils;
 import com.costin.eeon.net.GameClient;
 import com.costin.eeon.net.packets.player.updates.clientside.PlayerUpdatePacket;
 import com.dongbat.jbump.Rect;
-import jdk.vm.ci.meta.Local;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -51,16 +52,10 @@ public class WorldScreen implements Screen {
     private final Stage HUD;
     private final SpriteBatch worldBatch;
     private final CustomShaper debugBatch;
-
-    private Label debugLab, inspectToolLab;
+    private final Label debugLab, inspectToolLab;
     private boolean devMenu, inspectTool;
-
     private float auraTime;
     private boolean blocksObstructed;
-
-    public float getAuraTime() {
-        return auraTime;
-    }
 
     public WorldScreen() {
 
@@ -77,15 +72,15 @@ public class WorldScreen implements Screen {
         debugLab.setVisible(false);
 
         float gray = 0.07f;
-        float barHeight = Gdx.graphics.getHeight()/13f;
+        float barHeight = Gdx.graphics.getHeight() / 13f;
 
         Image HUDBar = new Image(Utils.dot);
-        HUDBar.setSize(Gdx.graphics.getWidth()/1.3f, barHeight);
+        HUDBar.setSize(Gdx.graphics.getWidth() / 1.3f, barHeight);
         HUDBar.setColor(gray, gray, gray, 1);
 
         Image HUDChat = new Image(Utils.dot);
-        HUDChat.setPosition(Gdx.graphics.getWidth()/1.3f, 0);
-        HUDChat.setSize(Gdx.graphics.getWidth()/4f, Gdx.graphics.getHeight());
+        HUDChat.setPosition(Gdx.graphics.getWidth() / 1.3f, 0);
+        HUDChat.setSize(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight());
         HUDChat.setColor(0, 0, 0, 1);
 
         TextButton gotoLobbyButt = new TextButton("Goto\nLobby", UIStyles.defButtStyle);
@@ -112,7 +107,7 @@ public class WorldScreen implements Screen {
         Group auraMenu = new Group();
 
         ImageButton smileyButt = new ImageButton(new TextureRegionDrawable(SmileyManager.getInstance().getSmileyByID(0).getTexture()));
-        smileyButt.setPosition(50,0);
+        smileyButt.setPosition(50, 0);
         smileyButt.setSize(33, barHeight);
         smileyButt.addListener(new ClickListener() {
             @Override
@@ -125,7 +120,7 @@ public class WorldScreen implements Screen {
         });
 
         ImageButton auraButt = new ImageButton(new TextureRegionDrawable(SmileyManager.getInstance().getAuraByID(0).getTexture()));
-        auraButt.setPosition(83,0);
+        auraButt.setPosition(83, 0);
         auraButt.setSize(33, barHeight);
         auraButt.addListener(new ClickListener() {
             @Override
@@ -139,26 +134,26 @@ public class WorldScreen implements Screen {
 
         Image smileyHUD = new Image(Utils.dot);
         smileyHUD.setPosition(10, barHeight + 10);
-        smileyHUD.setSize(14*20+10, 14 * 20 + 106);
+        smileyHUD.setSize(14 * 20 + 10, 14 * 20 + 106);
         smileyHUD.setColor(gray, gray, gray, 1);
 
         Image auraHUD = new Image(Utils.dot);
         auraHUD.setPosition(10, barHeight + 10);
-        auraHUD.setSize(14*20+10, Gdx.graphics.getHeight()/1.6f);
+        auraHUD.setSize(14 * 20 + 10, Gdx.graphics.getHeight() / 1.6f);
         auraHUD.setColor(gray, gray, gray, 1);
 
         List<ImageWithID> smileyShowcases = new ArrayList<>();
 
         int j = 0;
         for (int i = 0; i < SmileyManager.getInstance().getObtainableSmileyCount(); i++) {
-            Smiley smiley = SmileyManager.getInstance().getSmileyByID(i+j);
-            if(smiley.getVaultID().equals("unobtainable")) {
+            Smiley smiley = SmileyManager.getInstance().getSmileyByID(i + j);
+            if (smiley.getVaultID().equals("unobtainable")) {
                 i--;
                 j++;
                 continue;
             }
-            ImageWithID img = new ImageWithID(i+j, new TextureRegionDrawable(smiley.getTexture()));
-            img.setPosition(10 + ((i) % 14 * 20), barHeight + 106 + ((int)((i) / 14f) * 20));
+            ImageWithID img = new ImageWithID(i + j, new TextureRegionDrawable(smiley.getTexture()));
+            img.setPosition(10 + ((i) % 14 * 20), barHeight + 106 + ((int) ((i) / 14f) * 20));
             img.addListener(new ClickListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -179,9 +174,9 @@ public class WorldScreen implements Screen {
 
         for (int i = 0; i < SmileyManager.getInstance().getAuraCount(); i++) {
             Aura aura = SmileyManager.getInstance().getAuraByID(i);
-            if(aura == null) continue;
+            if (aura == null) continue;
             ImageWithID img = new ImageWithID(i, new TextureRegionDrawable(aura.getTexture()));
-            img.setPosition(10 + (i % 4 * 64), barHeight + 96 + ((int)(i / 4f) * 64));
+            img.setPosition(10 + (i % 4 * 64), barHeight + 96 + ((int) (i / 4f) * 64));
             img.addListener(new ClickListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -212,10 +207,10 @@ public class WorldScreen implements Screen {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                int rgba = Utils.colorPixmap.getPixel((int) (x*150/96), (int) (Utils.colorPixmap.getHeight() - y*150/96));
+                int rgba = Utils.colorPixmap.getPixel((int) (x * 150 / 96), (int) (Utils.colorPixmap.getHeight() - y * 150 / 96));
                 Color color = new Color();
                 Color.rgba8888ToColor(color, rgba);
-                if(color.a == 1) {
+                if (color.a == 1) {
                     PlayerUpdatePacket packet = new PlayerUpdatePacket();
                     packet.hasGodMode = LocalPlayer.getInstance().isHasGodMode();
                     packet.newAuraColor = rgba;
@@ -225,7 +220,7 @@ public class WorldScreen implements Screen {
             }
         });
 
-        auraWheelDot.setPosition(auraWheel.getX() + 96/2f - 5, auraWheel.getY() + 96/2f - 5);
+        auraWheelDot.setPosition(auraWheel.getX() + 96 / 2f - 5, auraWheel.getY() + 96 / 2f - 5);
 
         TextButton auraPresetWhite = new TextButton("Set to white", UIStyles.defButtStyle);
         auraPresetWhite.addListener(new ClickListener() {
@@ -235,7 +230,7 @@ public class WorldScreen implements Screen {
                 packet.hasGodMode = LocalPlayer.getInstance().isHasGodMode();
                 packet.newAuraColor = Color.rgba8888(Color.WHITE);
                 GameClient.client.sendTCP(packet);
-                auraWheelDot.setPosition(auraWheel.getX() + 96/2f - 5, auraWheel.getY() + 96/2f - 5);
+                auraWheelDot.setPosition(auraWheel.getX() + 96 / 2f - 5, auraWheel.getY() + 96 / 2f - 5);
                 return true;
             }
         });
@@ -269,15 +264,15 @@ public class WorldScreen implements Screen {
 
 
         smileyMenu.addActor(smileyHUD);
-        for (ImageWithID img:
-             smileyShowcases) {
+        for (ImageWithID img :
+                smileyShowcases) {
             smileyMenu.addActor(img);
         }
         smileyMenu.setVisible(false);
 
         auraMenu.addActor(auraHUD);
-        for (ImageWithID img:
-            auraShowcases) {
+        for (ImageWithID img :
+                auraShowcases) {
             auraMenu.addActor(img);
         }
         auraMenu.addActor(auraWheel);
@@ -302,6 +297,10 @@ public class WorldScreen implements Screen {
 
     public static WorldScreen getInstance() {
         return singleton;
+    }
+
+    public float getAuraTime() {
+        return auraTime;
     }
 
     @Override
@@ -333,18 +332,18 @@ public class WorldScreen implements Screen {
 
         LocalPlayer.getInstance().update();
 
-        if(!GameClient.client.isConnected()) {
+        if (!GameClient.client.isConnected()) {
             GameClient.hasJoined = false;
             GameClient.client.close();
             GameClient.fallbackText.setText("Server is down!");
             ScreenManager.setScreen(SplashScreen.getInstance());
         }
 
-        if(!blocksObstructed) {
+        if (!blocksObstructed) {
             if (input.isButtonPressed(Input.Buttons.LEFT)) {
                 //Block
                 BlockGroup.BaseBlock block = new BlockGroup.BaseBlock(WorldManager.getInstance().convertXToBlock(MainCursor.x), WorldManager.getInstance().convertYToBlock(MainCursor.y), 15, 0);
-                WorldManager.getInstance().EEWorld.setBlock(block);
+                boolean placed = WorldManager.getInstance().EEWorld.setBlock(block);
             }
             if (input.isButtonPressed(Input.Buttons.RIGHT)) {
                 //Block
@@ -353,24 +352,24 @@ public class WorldScreen implements Screen {
             }
         }
 
-        if(input.isKeyJustPressed(Input.Keys.F3)) {
+        if (input.isKeyJustPressed(Input.Keys.F3)) {
             devMenu = !devMenu;
             debugLab.setVisible(devMenu);
         }
-        if(input.isKeyJustPressed(Input.Keys.I)) {
+        if (input.isKeyJustPressed(Input.Keys.I)) {
             inspectTool = !inspectTool;
             inspectToolLab.setVisible(inspectTool);
         }
 
-        if(devMenu) {
+        if (devMenu) {
             debugLab.setText("ping: " + GameClient.client.getReturnTripTime() +
                     "\nfps: " + Gdx.graphics.getFramesPerSecond() +
                     "\npos: " + LocalPlayer.getInstance().getPos());
         }
-        if(inspectTool) {
+        if (inspectTool) {
             int x = WorldManager.getInstance().convertXToBlock(MainCursor.x);
             int y = WorldManager.getInstance().convertYToBlock(MainCursor.y);
-            if(x != -1 && y != -1) {
+            if (x != -1 && y != -1) {
                 BlockGroup.BaseBlock block = WorldManager.getInstance().EEWorld.getBlockAt(x, y, 0);
                 inspectToolLab.setText("ID: " + block.getId() +
                         "\nName: " + BlockManager.getInstance().getBlockTypeByID(block.getId()).codename.toLowerCase(Locale.ENGLISH) +
@@ -383,9 +382,9 @@ public class WorldScreen implements Screen {
         TextureRegion air = BlockManager.getInstance().getBlockTypeByID(0).texture;
         for (int i = 0; i < WorldManager.getInstance().EEWorld.worldWidth; i++) {
             for (int j = 0; j < WorldManager.getInstance().EEWorld.worldHeight; j++) {
-                Vector2 pos = new Vector2(i * 16,j * 16 );
+                Vector2 pos = new Vector2(i * 16, j * 16);
                 pos.y = Main.viewport.getCamera().viewportHeight - pos.y;
-                if(Rect.rect_isIntersecting(camX - camW/2, camY - camH/2, camW, camH, pos.x, pos.y, 16, 16)) {
+                if (Rect.rect_isIntersecting(camX - camW / 2, camY - camH / 2, camW, camH, pos.x, pos.y, 16, 16)) {
                     worldBatch.draw(air, pos.x, pos.y);
                 }
             }
@@ -397,7 +396,7 @@ public class WorldScreen implements Screen {
             for (int i = 0; i < group.xPositions.size(); i++) {
                 Vector2 pos = new Vector2(group.xPositions.get(i) * 16, group.yPositions.get(i) * 16);
                 pos.y = camH - pos.y;
-                if(Rect.rect_isIntersecting(camX - camW/2, camY - camH/2, camW, camH, pos.x, pos.y, 16, 16)) {
+                if (Rect.rect_isIntersecting(camX - camW / 2, camY - camH / 2, camW, camH, pos.x, pos.y, 16, 16)) {
                     worldBatch.draw(reg, pos.x, pos.y);
                 }
             }
@@ -416,27 +415,16 @@ public class WorldScreen implements Screen {
         }
         LocalPlayer.getInstance().draw(worldBatch);
         worldBatch.end();
-        if(devMenu) {
+        if (devMenu) {
             debugBatch.begin(ShapeRenderer.ShapeType.Line);
             debugBatch.setColor(0, 1, 0, 1);
             for (Rect rect :
-                        WorldManager.getInstance().collWorld.getRects()) {
-                    debugBatch.rect(rect.x, rect.y, rect.w, rect.h);
-                }
+                    WorldManager.getInstance().collWorld.getRects()) {
+                debugBatch.rect(rect.x, rect.y, rect.w, rect.h);
+            }
             debugBatch.setColor(1, 0, 0, 1);
-            //debugBatch.rect(x, y, w, h);
-            //debugBatch.rect(fX, fY, w, h);
-
-            //debugBatch.rect(x2, y2, w2, h2);
-            //debugBatch.rect(fX2, fY2, w2, h2);
             debugBatch.end(); // Supposed to be for inspect
         }
-        /*debugBatch.begin(ShapeRenderer.ShapeType.Filled);
-        if(inspectTool) {
-            debugBatch.setColor(Color.BLACK);
-            debugBatch.roundedRect(cursor.x, cursor.y, inspectToolLab.getWidth(), inspectToolLab.getHeight(), 5);
-        }
-        debugBatch.end();*/
 
         // Draw HUD
         HUD.act();
@@ -467,29 +455,5 @@ public class WorldScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    int x, y, w, h;
-    float fX, fY;
-
-    public void test(int i, int i1, int i2, int i3, float v, int i4) {
-        x = i;
-        y = i1;
-        w = i2;
-        h = i3;
-        fX = v;
-        fY = i4;
-    }
-
-    int x2, y2, w2, h2;
-    float fX2, fY2;
-
-    public void test2(int i, int i1, int i2, int i3, float v, int i4) {
-        x2 = i;
-        y2 = i1;
-        w2 = i2;
-        h2 = i3;
-        fX2 = v;
-        fY2 = i4;
     }
 }

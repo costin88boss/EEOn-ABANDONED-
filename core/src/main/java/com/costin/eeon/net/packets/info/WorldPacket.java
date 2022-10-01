@@ -20,3 +20,4 @@ public class WorldPacket {
     public boolean minimapEnabled;
     public String ownerId;
 }
+

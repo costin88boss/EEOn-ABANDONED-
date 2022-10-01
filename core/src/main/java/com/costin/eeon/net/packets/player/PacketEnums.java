@@ -6,6 +6,7 @@ public class PacketEnums {
         OLD_VERSION,
         NEW_VERSION
     }
+
     public enum AutoKickReason {
         CLIENTSIDE_ERROR,
         SERVERSIDE_ERROR

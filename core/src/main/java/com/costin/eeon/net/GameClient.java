@@ -22,9 +22,7 @@ import java.util.HashMap;
 
 public class GameClient {
     static final int port = 20600;
-    private static String lastIP = "";
     public static Client client;
-
     public static Label fallbackText;
     public static boolean hasJoined = false;
 
@@ -62,6 +60,7 @@ public class GameClient {
         registerPackets();
         client.start();
     }
+
     public static void createConnection(String ip, Label fallbackText) {
         if (hasJoined) return;
 

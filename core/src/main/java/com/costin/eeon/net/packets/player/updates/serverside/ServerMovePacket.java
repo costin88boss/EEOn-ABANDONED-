@@ -6,4 +6,5 @@ public class ServerMovePacket {
     public float vXDiff, vYDiff;
     public float vX, vY;
     public boolean spaced;
+
 }

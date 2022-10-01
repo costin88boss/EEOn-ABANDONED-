@@ -37,5 +37,6 @@ public class UIStyles {
         {
             font = Font.Nokia22;
             fontColor = Color.RED;
-        }};
+        }
+    };
 }

@@ -6,4 +6,5 @@ public class JoinRequestPacket {
 
     public int desiredSmiley, desiredAura;
     public boolean desiredGolden;
+
 }

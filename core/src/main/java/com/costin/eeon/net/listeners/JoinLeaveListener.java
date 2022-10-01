@@ -1,7 +1,6 @@
 package com.costin.eeon.net.listeners;
 
 import com.badlogic.gdx.graphics.Color;
-import com.costin.eeon.Main;
 import com.costin.eeon.game.Laws;
 import com.costin.eeon.game.players.LocalPlayer;
 import com.costin.eeon.game.players.Player;
@@ -30,6 +29,7 @@ public class JoinLeaveListener implements Listener {
         packet.desiredGolden = false;
         packet.clientVersion = Laws.clientVersion;
         LocalPlayer.getInstance().setLocalSmiley(packet.desiredSmiley);
+        //noinspection ConstantConditions
         LocalPlayer.getInstance().setLocalGolden(packet.desiredGolden);
         connection.sendTCP(packet);
     }
@@ -41,7 +41,7 @@ public class JoinLeaveListener implements Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        if(object instanceof ConnectionDenyPacket) {
+        if (object instanceof ConnectionDenyPacket) {
             PacketEnums.ConnectionDenyReason reason = ((ConnectionDenyPacket) object).reason;
             switch (reason) {
                 case UNKNOWN_VERSION:
@@ -54,7 +54,7 @@ public class JoinLeaveListener implements Listener {
                     GameClient.fallbackText.setText("Kicked: Server's on an outdated version!");
             }
         }
-        if(object instanceof AutoKickPacket) {
+        if (object instanceof AutoKickPacket) {
             PacketEnums.AutoKickReason reason = ((AutoKickPacket) object).reason;
             switch (reason) {
                 case CLIENTSIDE_ERROR:
@@ -68,9 +68,9 @@ public class JoinLeaveListener implements Listener {
             GameClient.client.close();
             ScreenManager.setScreen(SplashScreen.getInstance());
         }
-        if(object instanceof RequestAcceptedPacket) {
-            RequestAcceptedPacket packet = (RequestAcceptedPacket)object;
-            if(GameClient.hasJoined) return;
+        if (object instanceof RequestAcceptedPacket) {
+            RequestAcceptedPacket packet = (RequestAcceptedPacket) object;
+            if (GameClient.hasJoined) return;
             WorldManager.getInstance().collWorld.reset();
             WorldManager.getInstance().EEWorld.reset();
             WorldManager.getInstance().collWorld.add(LocalPlayer.getInstance(), packet.x + 1, packet.y + 1, 14, 14);
@@ -111,8 +111,8 @@ public class JoinLeaveListener implements Listener {
             GameClient.hasJoined = true;
         }
 
-        if(object instanceof PlayerJoinPacket) {
-            PlayerJoinPacket packet = (PlayerJoinPacket)object;
+        if (object instanceof PlayerJoinPacket) {
+            PlayerJoinPacket packet = (PlayerJoinPacket) object;
             Player ply = new Player(packet.username);
             WorldManager.getInstance().collWorld.add(ply, packet.x + 1, packet.y + 1, 14, 14);
             WorldManager.getInstance().collWorld.add(ply.innerCollision, packet.x + 2, packet.y + 2, 12, 12);
@@ -126,10 +126,10 @@ public class JoinLeaveListener implements Listener {
             PlayerManager.getInstance().players.put(packet.playerID, ply);
             Log.info(packet.username + " has joined!");
         }
-        if(object instanceof PlayerLeftPacket) {
-            PlayerLeftPacket packet = (PlayerLeftPacket)object;
+        if (object instanceof PlayerLeftPacket) {
+            PlayerLeftPacket packet = (PlayerLeftPacket) object;
             Player ply = PlayerManager.getInstance().players.remove(packet.playerID);
-            if(ply == null) {
+            if (ply == null) {
                 Log.error("eeon", "unknown player left, id: " + packet.playerID);
             } else {
                 WorldManager.getInstance().collWorld.remove(ply);

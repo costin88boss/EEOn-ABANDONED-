@@ -35,6 +35,7 @@ public class BlockGroup {
     // BaseBlock = block with no stuff like rotation, etc.
     public static class BaseBlock extends GameObject {
         int x, y, id, layer;
+
         public BaseBlock(int x, int y, int id, int layer) {
             super();
             this.x = x;

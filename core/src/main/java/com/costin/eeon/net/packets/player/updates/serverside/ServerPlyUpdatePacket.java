@@ -5,4 +5,5 @@ public class ServerPlyUpdatePacket {
     public boolean hasGodMode;
     public int newSmiley, newAura; // -1 = disable
     public int newAuraColor;
+
 }

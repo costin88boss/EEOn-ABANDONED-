@@ -9,4 +9,5 @@ public class PlayerJoinPacket {
 
     public int smiley, aura;
     public boolean golden;
+
 }
