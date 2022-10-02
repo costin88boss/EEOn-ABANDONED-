@@ -27,6 +27,7 @@ import com.costin.eeon.game.players.PlayerManager;
 import com.costin.eeon.game.smileys.Aura;
 import com.costin.eeon.game.smileys.Smiley;
 import com.costin.eeon.game.smileys.SmileyManager;
+import com.costin.eeon.game.sounds.SoundManager;
 import com.costin.eeon.game.world.BlockGroup;
 import com.costin.eeon.game.world.WorldManager;
 import com.costin.eeon.game.world.items.BlockManager;
@@ -324,9 +325,12 @@ public class  WorldScreen implements Screen {
         LocalPlayer.getInstance().update();
 
         if (!GameClient.client.isConnected()) {
-            GameClient.hasJoined = false;
-            GameClient.client.close();
-            GameClient.fallbackText.setText("Server is down!");
+            if (!GameClient.kicked) {
+                GameClient.hasJoined = false;
+                GameClient.client.close();
+                GameClient.fallbackText.setText("Server is down!");
+                SoundManager.getInstance().dontPanic.play();
+            }
             ScreenManager.setScreen(SplashScreen.getInstance());
         }
 

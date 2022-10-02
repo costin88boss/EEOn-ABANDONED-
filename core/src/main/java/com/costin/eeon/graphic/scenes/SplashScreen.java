@@ -12,6 +12,7 @@ import com.costin.eeon.game.players.CollFilter;
 import com.costin.eeon.game.players.LocalPlayer;
 import com.costin.eeon.game.players.PlayerManager;
 import com.costin.eeon.game.smileys.SmileyManager;
+import com.costin.eeon.game.sounds.SoundManager;
 import com.costin.eeon.game.world.WorldManager;
 import com.costin.eeon.game.world.items.BlockManager;
 import com.costin.eeon.graphic.ScreenManager;
@@ -34,6 +35,7 @@ public class  SplashScreen implements Screen {
         if (WorldManager.getInstance() == null) {
             Font.init();
             GameClient.init();
+            new SoundManager();
             new SmileyManager(); // WARNING: these classes must-
             new MainMenu();      //-be constructed in this order.
             new WorldScreen();

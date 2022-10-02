@@ -151,9 +151,6 @@ public class  Player extends GameObject {
         return new Vector2(x, y);
     }
 
-    public float getCorrectX() {
-        return Math.abs(x - 640);
-    }
     public float getCorrectY() {
         return Math.abs(y - 480);
     }
@@ -297,7 +294,7 @@ public class  Player extends GameObject {
             if(imx != 0 || (ItemId.isLiquid(0) && !hasGodMode)){
                 moving = true;
             }else if(diffX < 0.1 && diffX > -0.1){
-                float tx = getCorrectX() % 16;
+                float tx = x % 16;
                 if(tx < 2){
                     if(tx < .2){
                         x = (int)x;

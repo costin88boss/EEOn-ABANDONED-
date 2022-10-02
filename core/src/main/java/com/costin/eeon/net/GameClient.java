@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.costin.eeon.game.world.BlockGroup;
 import com.costin.eeon.game.world.EEWorld;
 import com.costin.eeon.net.listeners.JoinLeaveListener;
+import com.costin.eeon.net.listeners.KickListener;
 import com.costin.eeon.net.listeners.PlayerListener;
 import com.costin.eeon.net.packets.info.BlockGroupPacket;
 import com.costin.eeon.net.packets.info.WorldPacket;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 public class  GameClient {
     static final int port = 20600;
     public static Client client;
+    public static boolean kicked;
     public static Label fallbackText;
     public static boolean hasJoined = false;
 
@@ -39,6 +41,7 @@ public class  GameClient {
         client.getKryo().register(ServerPlyUpdatePacket.class);
         client.getKryo().register(AutoKickPacket.class);
         client.getKryo().register(PacketEnums.AutoKickReason.class);
+        client.getKryo().register(KickPacket.class);
 
         client.getKryo().register(PlayerPacket.class);
         client.getKryo().register(WorldPacket.class);
@@ -57,12 +60,14 @@ public class  GameClient {
         client = new Client(8192, 16384);
         client.addListener(new JoinLeaveListener());
         client.addListener(new PlayerListener());
+        client.addListener(new KickListener());
         registerPackets();
         client.start();
     }
 
     public static void createConnection(String ip, Label fallbackText) {
         if (hasJoined) return;
+        kicked = false;
 
         System.out.println("Connecting to server " + ip);
 

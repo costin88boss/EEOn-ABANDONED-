@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.costin.eeon.Main;
 import com.costin.eeon.graphic.ScreenManager;
@@ -94,7 +95,10 @@ public class  MainMenu implements Screen {
         serverIPBorders.setPosition(w / 2 - serverIP.getWidth() / 2 - 2, h / 2 - 1);
 
         Label errorText = new Label("", UIStyles.labStyle);
-        errorText.setPosition(0, h - 10);
+        errorText.setPosition(0, h);
+        errorText.setWrap(true);
+        errorText.setAlignment(Align.top);
+        errorText.setWidth(w);
 
         cnctBtn.addListener(new ClickListener() {
             @Override
@@ -113,7 +117,7 @@ public class  MainMenu implements Screen {
         cnctBtn2.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                GameClient.createConnection("92.81.219.69", errorText);
+                GameClient.createConnection("92.81.219.102", errorText);
 
                 return super.touchDown(event, x, y, pointer, button);
             }

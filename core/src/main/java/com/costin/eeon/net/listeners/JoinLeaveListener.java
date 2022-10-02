@@ -8,8 +8,6 @@ import com.costin.eeon.game.players.PlayerManager;
 import com.costin.eeon.game.world.BlockGroup;
 import com.costin.eeon.game.world.EEWorld;
 import com.costin.eeon.game.world.WorldManager;
-import com.costin.eeon.graphic.ScreenManager;
-import com.costin.eeon.graphic.scenes.SplashScreen;
 import com.costin.eeon.net.GameClient;
 import com.costin.eeon.net.packets.info.BlockGroupPacket;
 import com.costin.eeon.net.packets.player.*;
@@ -53,20 +51,6 @@ public class  JoinLeaveListener implements Listener {
                 case NEW_VERSION:
                     GameClient.fallbackText.setText("Kicked: Server's on an outdated version!");
             }
-        }
-        if (object instanceof AutoKickPacket) {
-            PacketEnums.AutoKickReason reason = ((AutoKickPacket) object).reason;
-            switch (reason) {
-                case CLIENTSIDE_ERROR:
-                    GameClient.fallbackText.setText("Kicked: Unexpected clientside error");
-                    break;
-                case SERVERSIDE_ERROR:
-                    GameClient.fallbackText.setText("Kicked: Unexpected serverside error");
-                    break;
-            }
-            GameClient.hasJoined = false;
-            GameClient.client.close();
-            ScreenManager.setScreen(SplashScreen.getInstance());
         }
         if (object instanceof RequestAcceptedPacket) {
             RequestAcceptedPacket packet = (RequestAcceptedPacket) object;
