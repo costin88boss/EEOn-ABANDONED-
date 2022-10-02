@@ -11,7 +11,6 @@ import com.costin.eeon.game.Laws;
 import com.costin.eeon.game.smileys.Aura;
 import com.costin.eeon.game.smileys.SmileyManager;
 import com.costin.eeon.game.world.WorldManager;
-import com.costin.eeon.graphic.scenes.WorldScreen;
 import com.costin.eeon.net.packets.player.updates.serverside.ServerMovePacket;
 import com.dongbat.jbump.Collision;
 import com.dongbat.jbump.Item;
@@ -25,15 +24,16 @@ public class  Player extends GameObject {
     public Item<GameObject> actionCollision;
     public Item<GameObject> innerCollision;
     protected float diffX, diffY;
-    protected boolean isGrounded, hitCeiling;
+    protected boolean isGrounded, hitCeiling, stuckInBlock;
     boolean oldPacket;
     //rainbow stuff, was lazy to put at top
     int rainbowType = 0;
     private float x, y, vY, vX;
+    private final Vector2 serverPos;
     private boolean hasGodMode, isGolden;
     private String username;
     private Animation<TextureRegion> auraAnim;
-    private Animation<TextureRegion> staffAuraAnim;
+    private Animation<TextureRegion> secondAuraAnim;
     private boolean staffAuraLoaded;
     private float animFrameTime;
     private TextureRegion smiley, aura;
@@ -50,6 +50,7 @@ public class  Player extends GameObject {
         auraColor = Color.WHITE.cpy();
         setLocalAura(0);
         setLocalUsername(username);
+        serverPos = new Vector2();
     }
 
     public void setLocalSmiley(int newSmiley) {
@@ -61,8 +62,8 @@ public class  Player extends GameObject {
         animFrameTime = 0;
         staffAuraLoaded = false;
         Aura newAuraShape = SmileyManager.getInstance().getAuraByID(newAura);
-        if(newAuraShape.isStaffAura()) staffAuraAnim = newAuraShape.getGoldenAnimation();
-        else staffAuraAnim = null;
+        if(newAuraShape.isStaffAura() || newAura == 3) secondAuraAnim = newAuraShape.getGoldenAnimation();
+        else secondAuraAnim = null;
         if (!newAuraShape.isAnimated()) {
             if (!isGolden) aura = newAuraShape.getTexture();
             else aura = newAuraShape.getGoldenTexture();
@@ -158,9 +159,9 @@ public class  Player extends GameObject {
             vY = movePacket.vY;
             //x = movePacket.x;
             //y = movePacket.y;
-            // better interpolate
-            x += serverFixSpeed * (movePacket.x - x);
-            y += serverFixSpeed * (movePacket.y - y);
+            // better interpolate serverPos
+            serverPos.scl(1 - Laws.cameraLag * 3);
+            serverPos.add(x * Laws.cameraLag * 3, y * Laws.cameraLag * 3);
             diffX = movePacket.vXDiff;
             diffY = movePacket.vYDiff;
             WorldManager.getInstance().collWorld.update(this, x + 1, y + 1);
@@ -213,6 +214,7 @@ public class  Player extends GameObject {
                 vY = 0;
             }
 
+            stuckInBlock = false;
             if (!hasGodMode) {
                 Response.Result res = WorldManager.getInstance().collWorld.move(this, x + vX + 1, y + vY + 1, CollFilter.getInstance().blockFilter);
                 boolean canGround = false;
@@ -227,6 +229,10 @@ public class  Player extends GameObject {
                     if (coll.normal.x != 0) {
                         vX = coll.normal.x / 1000f;
                     }
+                    if(coll.overlaps) {
+                        stuckInBlock = true;
+                        break;
+                    }
                 }
                 isGrounded = canGround;
             } else { //640, 480
@@ -234,9 +240,14 @@ public class  Player extends GameObject {
                 y += vY;
                 WorldManager.getInstance().collWorld.update(this, x, y);
             }
+            if(stuckInBlock) {
+                WorldManager.getInstance().collWorld.update(this, x, y);
+                vX = 0;
+                vY = 0;
+            }
             Rect rect = WorldManager.getInstance().collWorld.getRect(this);
             float _x, _y;
-            if (!hasGodMode) {
+            if (!hasGodMode && !stuckInBlock) {
                 _x = rect.x - 1;
                 _y = rect.y - 1;
             } else {
@@ -335,18 +346,23 @@ public class  Player extends GameObject {
             }
             batch.setColor(auraColor.r, auraColor.g, auraColor.b, 1);
             if (aura != null) batch.draw(aura, x - 24, y - 24);
-            else if (auraAnim != null || staffAuraAnim != null) {
+            else if (auraAnim != null || secondAuraAnim != null) {
                 animFrameTime += Gdx.graphics.getDeltaTime();
-                if(staffAuraAnim != null) {
+                if(secondAuraAnim != null && auraID != 3) {
                     if(staffAuraLoaded) {
-                        batch.draw(staffAuraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                        batch.draw(secondAuraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
                     } else {
                         batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
                     }
-                } else batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                } else {
+                    batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
+                    if(auraID == 3) { // ornate
+                        batch.draw(secondAuraAnim.getKeyFrame(animFrameTime + secondAuraAnim.getAnimationDuration()/2f), x - 24, y - 24);
+                    }
+                }
                 if(!staffAuraLoaded && auraAnim.isAnimationFinished(animFrameTime) ||
-                   staffAuraAnim != null && staffAuraAnim.isAnimationFinished(animFrameTime)) {
-                    if(staffAuraAnim != null) staffAuraLoaded = true;
+                   secondAuraAnim != null && secondAuraAnim.isAnimationFinished(animFrameTime)) {
+                    if(secondAuraAnim != null) staffAuraLoaded = true;
                     animFrameTime = 0;
                 }
             }

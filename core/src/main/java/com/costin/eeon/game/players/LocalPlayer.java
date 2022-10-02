@@ -27,6 +27,10 @@ public class  LocalPlayer extends Player {
         return instance;
     }
 
+    public boolean isDevCam() {
+        return devCam;
+    }
+
     public void prepare() {
         Vector2 pos = getPos();
         Main.viewport.getCamera().position.set(pos.x, pos.y, 0);

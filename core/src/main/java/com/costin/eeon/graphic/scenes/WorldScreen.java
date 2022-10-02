@@ -65,6 +65,7 @@ public class  WorldScreen implements Screen {
 
         debugLab = new Label("", UIStyles.defLabStyle);
         debugLab.setPosition(0, Gdx.graphics.getHeight() - 50);
+        debugLab.setFontScale(0.5f);
         inspectToolLab = new Label("", UIStyles.defLabStyle);
 
         inspectToolLab.setVisible(false);
@@ -343,17 +344,26 @@ public class  WorldScreen implements Screen {
 
         if (input.isKeyJustPressed(Input.Keys.F3)) {
             devMenu = !devMenu;
-            debugLab.setVisible(devMenu);
         }
+        debugLab.setVisible(devMenu ||  LocalPlayer.getInstance().isDevCam());
         if (input.isKeyJustPressed(Input.Keys.I)) {
             inspectTool = !inspectTool;
             inspectToolLab.setVisible(inspectTool);
         }
 
         if (devMenu) {
-            debugLab.setText("ping: " + GameClient.client.getReturnTripTime() +
-                    "\nfps: " + Gdx.graphics.getFramesPerSecond() +
-                    "\npos: " + LocalPlayer.getInstance().getPos());
+            if(!LocalPlayer.getInstance().isDevCam()) {
+                debugLab.setText("ping: " + GameClient.client.getReturnTripTime() +
+                        "\nfps: " + Gdx.graphics.getFramesPerSecond() +
+                        "\npos: " + LocalPlayer.getInstance().getPos());
+            } else {
+                debugLab.setText("ping: " + GameClient.client.getReturnTripTime() +
+                        "\nfps: " + Gdx.graphics.getFramesPerSecond() +
+                        "\npos: " + LocalPlayer.getInstance().getPos() +
+                        "\nDEV CAM ON. CONTROLS: 4,6,5,8. +/- SPEED");
+            }
+        } else if(LocalPlayer.getInstance().isDevCam()) {
+            debugLab.setText("\nDEV CAM ON. CONTROLS: 4,6,5,8. +/- SPEED");
         }
         if (inspectTool) {
             int x = WorldManager.getInstance().convertXToBlock(MainCursor.x);

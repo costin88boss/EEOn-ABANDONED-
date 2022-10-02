@@ -336,9 +336,9 @@ public class  SmileyManager {
                 goldenTextureRegions[i] = new TextureRegion(originalTexture, (i + auraImagesI) * 64, 64, 64, 64);
             }
 
-            aura.animation = new Animation<>(speed / 2, textureRegions);
+            aura.animation = new Animation<>(speed / 3, textureRegions);
             aura.animation.setPlayMode(Animation.PlayMode.LOOP);
-            aura.goldenAnimation = new Animation<>(speed / 2, goldenTextureRegions);
+            aura.goldenAnimation = new Animation<>(speed / 3, goldenTextureRegions);
             aura.goldenAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
         auraImagesI = tempI;
