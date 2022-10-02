@@ -34,6 +34,9 @@ public class  SmileyManager {
     public SmileyManager() {
         smileys.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         auras.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        aurasBubble.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        aurasGalaxy.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        aurasStaff.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         generateSmileys();
         generateAuras();
         singleton = this;
@@ -322,7 +325,6 @@ public class  SmileyManager {
 
     private void addAuraShape(int id, String name, Texture originalTexture, String payVaultID, int frames, float speed, boolean createRotationAnimation, boolean generate) {
         auraCount++;
-        System.out.println(auraCount + "|" + name);
         int tempI = auraImagesI;
         if(!generate) auraImagesI = 0;
         Aura aura = new Aura();

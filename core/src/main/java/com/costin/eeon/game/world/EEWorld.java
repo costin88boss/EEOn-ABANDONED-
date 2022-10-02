@@ -3,7 +3,6 @@ package com.costin.eeon.game.world;
 import com.badlogic.gdx.graphics.Color;
 import com.costin.eeon.Main;
 import com.costin.eeon.game.GameObject;
-import com.costin.eeon.game.world.items.BlockManager;
 import com.dongbat.jbump.Item;
 
 import java.util.ArrayList;
@@ -120,7 +119,7 @@ public class  EEWorld {
                     group.yPositions.remove(i);
                     Item<GameObject> item = group.perBlockItems.remove(i);
                     WorldManager.getInstance().collWorld.remove(item);
-                    //System.out.println("Removed " + BlockManager.getInstance().getBlockTypeByID(i).codename);
+                    // NOTE: i IS NOT id!
                     break;
                 }
             }

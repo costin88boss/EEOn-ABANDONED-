@@ -40,9 +40,9 @@ import com.costin.eeon.net.packets.player.updates.clientside.PlayerUpdatePacket;
 import com.dongbat.jbump.Rect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.Locale;
 
 import static com.badlogic.gdx.Gdx.input;
 
@@ -67,6 +67,7 @@ public class  WorldScreen implements Screen {
         debugLab.setPosition(0, Gdx.graphics.getHeight() - 50);
         debugLab.setFontScale(0.5f);
         inspectToolLab = new Label("", UIStyles.defLabStyle);
+        inspectToolLab.setFontScale(0.5f);
 
         inspectToolLab.setVisible(false);
         debugLab.setVisible(false);
@@ -371,14 +372,14 @@ public class  WorldScreen implements Screen {
             if (x != -1 && y != -1) {
                 BlockGroup.BaseBlock block = WorldManager.getInstance().EEWorld.getBlockAt(x, y, 0);
                 inspectToolLab.setText("ID: " + block.getId() +
-                        "\nName: " + BlockManager.getInstance().getBlockTypeByID(block.getId()).codename.toLowerCase(Locale.ENGLISH) +
+                        "\nTags: " + Arrays.toString(BlockManager.getInstance().bricks.get(block.getId()).tags) +
                         "\nX: " + x +
                         "\nY: " + y);
             } else inspectToolLab.setText("Out of bounds!");
             inspectToolLab.setPosition(HUDCursor.x, HUDCursor.y);
         }
         worldBatch.begin();
-        TextureRegion air = BlockManager.getInstance().getBlockTypeByID(0).texture;
+        TextureRegion air = BlockManager.getInstance().brickRegions.get(0);
         for (int i = 0; i < WorldManager.getInstance().EEWorld.worldWidth; i++) {
             for (int j = 0; j < WorldManager.getInstance().EEWorld.worldHeight; j++) {
                 Vector2 pos = new Vector2(i * 16, j * 16);
@@ -391,7 +392,7 @@ public class  WorldScreen implements Screen {
 
         for (BlockGroup group :
                 WorldManager.getInstance().EEWorld.blocks) {
-            TextureRegion reg = BlockManager.getInstance().getBlockTypeByID(group.blockId).texture;
+            TextureRegion reg = BlockManager.getInstance().brickRegions.get(group.blockId);
             for (int i = 0; i < group.xPositions.size(); i++) {
                 Vector2 pos = new Vector2(group.xPositions.get(i) * 16, group.yPositions.get(i) * 16);
                 pos.y = camH - pos.y;
