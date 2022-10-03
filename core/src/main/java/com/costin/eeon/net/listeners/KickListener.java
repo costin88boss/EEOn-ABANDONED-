@@ -29,7 +29,7 @@ public class KickListener implements Listener {
             GameClient.hasJoined = false;
             GameClient.client.close();
         }
-        if (object instanceof KickPacket) { // admin kicked me, report
+        if (object instanceof KickPacket) { // admin kicked/banned me, report
             GameClient.kicked = true;
             KickPacket packet = (KickPacket) object;
 
