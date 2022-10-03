@@ -8,6 +8,7 @@ import com.costin.eeon.net.listeners.JoinLeaveListener;
 import com.costin.eeon.net.listeners.KickListener;
 import com.costin.eeon.net.listeners.PlayerListener;
 import com.costin.eeon.net.packets.info.BlockGroupPacket;
+import com.costin.eeon.net.packets.info.PlayerChangePacket;
 import com.costin.eeon.net.packets.info.WorldPacket;
 import com.costin.eeon.net.packets.player.*;
 import com.costin.eeon.net.packets.player.updates.clientside.PlayerMovePacket;
@@ -42,6 +43,7 @@ public class GameClient {
         client.getKryo().register(AutoKickPacket.class);
         client.getKryo().register(PacketEnums.AutoKickReason.class);
         client.getKryo().register(KickPacket.class);
+        client.getKryo().register(PlayerChangePacket.class);
 
         client.getKryo().register(PlayerPacket.class);
         client.getKryo().register(WorldPacket.class);
@@ -49,6 +51,7 @@ public class GameClient {
 
         client.getKryo().register(HashMap.class);
         client.getKryo().register(ArrayList.class);
+        client.getKryo().register(String[].class);
 
         client.getKryo().register(EEWorld.class);
         client.getKryo().register(Color.class);

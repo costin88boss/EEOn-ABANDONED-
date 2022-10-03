@@ -28,7 +28,6 @@ public class Player extends GameObject {
     protected float diffX, diffY;
     protected boolean isGrounded, hitCeiling, stuckInBlock;
     boolean oldPacket;
-    //rainbow stuff, was lazy to put at top
     int rainbowType = 0;
     private float x, y, vY, vX;
     private boolean hasGodMode, isGolden;
@@ -60,8 +59,7 @@ public class Player extends GameObject {
     }
 
     public void setLocalAura(int newAura) {
-        animFrameTime = 0;
-        staffAuraLoaded = false;
+        resetAuraCurrAnim();
         Aura newAuraShape = SmileyManager.getInstance().getAuraByID(newAura);
         if (newAuraShape.isStaffAura() || newAura == 3) secondAuraAnim = newAuraShape.getGoldenAnimation();
         else secondAuraAnim = null;
@@ -98,6 +96,7 @@ public class Player extends GameObject {
     }
 
     public void setLocalGodMode(boolean godMode) {
+        resetAuraCurrAnim();
         if (isGrounded && !hasGodMode) {
             vY += Laws.gravity / 5;
             y += 1;
@@ -168,8 +167,8 @@ public class Player extends GameObject {
             //x = movePacket.x;
             //y = movePacket.y;
             // better interpolate serverPos
-            serverPos.scl(1 - Laws.cameraLag * 3);
-            serverPos.add(x * Laws.cameraLag * 3, y * Laws.cameraLag * 3);
+            serverPos.scl(1 - serverFixSpeed);
+            serverPos.add(x * serverFixSpeed, y * serverFixSpeed);
             diffX = movePacket.vXDiff;
             diffY = movePacket.vYDiff;
             WorldManager.getInstance().collWorld.update(this, x + 1, y + 1);
