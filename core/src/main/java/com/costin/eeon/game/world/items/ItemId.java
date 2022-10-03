@@ -3,7 +3,7 @@ package com.costin.eeon.game.world.items;
 
 import java.util.Arrays;
 
-public class  ItemId {
+public class ItemId {
     public static final int LABEL = 1000;
 
     public static final int PIANO = 77;

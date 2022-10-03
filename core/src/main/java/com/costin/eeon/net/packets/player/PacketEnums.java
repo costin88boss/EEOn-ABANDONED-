@@ -1,6 +1,6 @@
 package com.costin.eeon.net.packets.player;
 
-public class  PacketEnums {
+public class PacketEnums {
     public enum ConnectionDenyReason {
         UNKNOWN_VERSION,
         OLD_VERSION,

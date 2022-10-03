@@ -47,7 +47,7 @@ import java.util.List;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class  WorldScreen implements Screen {
+public class WorldScreen implements Screen {
 
     private static WorldScreen singleton;
     private final Stage HUD;
@@ -350,14 +350,14 @@ public class  WorldScreen implements Screen {
         if (input.isKeyJustPressed(Input.Keys.F3)) {
             devMenu = !devMenu;
         }
-        debugLab.setVisible(devMenu ||  LocalPlayer.getInstance().isDevCam());
+        debugLab.setVisible(devMenu || LocalPlayer.getInstance().isDevCam());
         if (input.isKeyJustPressed(Input.Keys.I)) {
             inspectTool = !inspectTool;
             inspectToolLab.setVisible(inspectTool);
         }
 
         if (devMenu) {
-            if(!LocalPlayer.getInstance().isDevCam()) {
+            if (!LocalPlayer.getInstance().isDevCam()) {
                 debugLab.setText("ping: " + GameClient.client.getReturnTripTime() +
                         "\nfps: " + Gdx.graphics.getFramesPerSecond() +
                         "\npos: " + LocalPlayer.getInstance().getPos());
@@ -367,7 +367,7 @@ public class  WorldScreen implements Screen {
                         "\npos: " + LocalPlayer.getInstance().getPos() +
                         "\nDEV CAM ON. CONTROLS: 4,6,5,8. +/- SPEED");
             }
-        } else if(LocalPlayer.getInstance().isDevCam()) {
+        } else if (LocalPlayer.getInstance().isDevCam()) {
             debugLab.setText("\nDEV CAM ON. CONTROLS: 4,6,5,8. +/- SPEED");
         }
         if (inspectTool) {

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-public class  EELevel {
+public class EELevel {
 
     public static List<Integer> getUIntArray(DataInputStream data) throws IOException {
         int count = data.readInt();

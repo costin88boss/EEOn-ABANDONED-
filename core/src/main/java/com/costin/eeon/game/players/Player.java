@@ -19,9 +19,10 @@ import com.dongbat.jbump.Rect;
 import com.dongbat.jbump.Response;
 import com.esotericsoftware.kryonet.Connection;
 
-public class  Player extends GameObject {
+public class Player extends GameObject {
 
     private static final float serverFixSpeed = 0.1f;
+    private final Vector2 serverPos;
     public Item<GameObject> actionCollision;
     public Item<GameObject> innerCollision;
     protected float diffX, diffY;
@@ -30,7 +31,6 @@ public class  Player extends GameObject {
     //rainbow stuff, was lazy to put at top
     int rainbowType = 0;
     private float x, y, vY, vX;
-    private final Vector2 serverPos;
     private boolean hasGodMode, isGolden;
     private String username;
     private Animation<TextureRegion> auraAnim;
@@ -63,7 +63,7 @@ public class  Player extends GameObject {
         animFrameTime = 0;
         staffAuraLoaded = false;
         Aura newAuraShape = SmileyManager.getInstance().getAuraByID(newAura);
-        if(newAuraShape.isStaffAura() || newAura == 3) secondAuraAnim = newAuraShape.getGoldenAnimation();
+        if (newAuraShape.isStaffAura() || newAura == 3) secondAuraAnim = newAuraShape.getGoldenAnimation();
         else secondAuraAnim = null;
         if (!newAuraShape.isAnimated()) {
             if (!isGolden) aura = newAuraShape.getTexture();
@@ -237,7 +237,7 @@ public class  Player extends GameObject {
                     if (coll.normal.x != 0) {
                         vX = coll.normal.x / 1000f;
                     }
-                    if(coll.overlaps) {
+                    if (coll.overlaps) {
                         stuckInBlock = true;
                         break;
                     }
@@ -248,7 +248,7 @@ public class  Player extends GameObject {
                 y += vY;
                 WorldManager.getInstance().collWorld.update(this, x, y);
             }
-            if(stuckInBlock) {
+            if (stuckInBlock) {
                 WorldManager.getInstance().collWorld.update(this, x, y);
                 vX = 0;
                 vY = 0;
@@ -291,37 +291,37 @@ public class  Player extends GameObject {
 
             boolean moving = false;
 
-            if(imx != 0 || (ItemId.isLiquid(0) && !hasGodMode)){
+            if (imx != 0 || (ItemId.isLiquid(0) && !hasGodMode)) {
                 moving = true;
-            }else if(diffX < 0.1 && diffX > -0.1){
+            } else if (diffX < 0.1 && diffX > -0.1) {
                 float tx = x % 16;
-                if(tx < 2){
-                    if(tx < .2){
-                        x = (int)x;
-                    } else x -= tx/15;
-                }else if(tx > 14){
-                    if(tx > 15.8){
-                        x = (int)x;
-                        x ++;
-                    }else x+= (tx-14)/15;
+                if (tx < 2) {
+                    if (tx < .2) {
+                        x = (int) x;
+                    } else x -= tx / 15;
+                } else if (tx > 14) {
+                    if (tx > 15.8) {
+                        x = (int) x;
+                        x++;
+                    } else x += (tx - 14) / 15;
                 }
 
             }
 
-            if(imy != 0 || (ItemId.isLiquid(0) && !hasGodMode)){
+            if (imy != 0 || (ItemId.isLiquid(0) && !hasGodMode)) {
                 moving = true;
-            }else if(diffY < 0.1 && diffY > -0.1 ){
+            } else if (diffY < 0.1 && diffY > -0.1) {
                 float ty = getCorrectY() % 16;
-                if(ty < 2){
-                    if(ty < .2){
-                        y = (int)y;
-                    }else y -= ty/15;
-                }else if(ty > 14){
+                if (ty < 2) {
+                    if (ty < .2) {
+                        y = (int) y;
+                    } else y -= ty / 15;
+                } else if (ty > 14) {
 
-                    if(ty > 15.8){
-                        y = (int)y;
-                        y ++;
-                    }else y+= (ty-14)/15;
+                    if (ty > 15.8) {
+                        y = (int) y;
+                        y++;
+                    } else y += (ty - 14) / 15;
                 }
             }
         }
@@ -356,21 +356,21 @@ public class  Player extends GameObject {
             if (aura != null) batch.draw(aura, x - 24, y - 24);
             else if (auraAnim != null || secondAuraAnim != null) {
                 animFrameTime += Gdx.graphics.getDeltaTime();
-                if(secondAuraAnim != null && auraID != 3) {
-                    if(staffAuraLoaded) {
+                if (secondAuraAnim != null && auraID != 3) {
+                    if (staffAuraLoaded) {
                         batch.draw(secondAuraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
                     } else {
                         batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
                     }
                 } else {
                     batch.draw(auraAnim.getKeyFrame(animFrameTime), x - 24, y - 24);
-                    if(auraID == 3) { // ornate
-                        batch.draw(secondAuraAnim.getKeyFrame(animFrameTime + secondAuraAnim.getAnimationDuration()/2f), x - 24, y - 24);
+                    if (auraID == 3) { // ornate
+                        batch.draw(secondAuraAnim.getKeyFrame(animFrameTime + secondAuraAnim.getAnimationDuration() / 2f), x - 24, y - 24);
                     }
                 }
-                if(!staffAuraLoaded && auraAnim.isAnimationFinished(animFrameTime) ||
-                   secondAuraAnim != null && secondAuraAnim.isAnimationFinished(animFrameTime)) {
-                    if(secondAuraAnim != null) staffAuraLoaded = true;
+                if (!staffAuraLoaded && auraAnim.isAnimationFinished(animFrameTime) ||
+                        secondAuraAnim != null && secondAuraAnim.isAnimationFinished(animFrameTime)) {
+                    if (secondAuraAnim != null) staffAuraLoaded = true;
                     animFrameTime = 0;
                 }
             }

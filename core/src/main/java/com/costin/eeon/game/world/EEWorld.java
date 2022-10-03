@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class  EEWorld {
+public class EEWorld {
     public final List<BlockGroup> blocks;
     public String owner;
     public String title;
@@ -85,7 +85,7 @@ public class  EEWorld {
     }
 
     private boolean checkAndAddBlock(int id, int layer, int x, int y) {
-        if(id == 0) return false;
+        if (id == 0) return false;
         BlockGroup group;
         group = getGroupWith(id, layer);
         if (group == null) {

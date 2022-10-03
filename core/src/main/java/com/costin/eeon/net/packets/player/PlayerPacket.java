@@ -1,6 +1,6 @@
 package com.costin.eeon.net.packets.player;
 
-public class  PlayerPacket {
+public class PlayerPacket {
     public float x, y, vY, vX;
     public String username;
 

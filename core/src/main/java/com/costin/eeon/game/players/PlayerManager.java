@@ -2,7 +2,7 @@ package com.costin.eeon.game.players;
 
 import java.util.HashMap;
 
-public class  PlayerManager {
+public class PlayerManager {
 
     private static PlayerManager singleton;
     public HashMap<Integer, Player> players;

@@ -2,7 +2,7 @@ package com.costin.eeon.graphic.util;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class  CustomShaper extends ShapeRenderer {
+public class CustomShaper extends ShapeRenderer {
     public void roundedRect(float x, float y, float width, float height, float radius) {
         // Central rectangle
         super.rect(x + radius, y + radius, width - 2 * radius, height - 2 * radius);

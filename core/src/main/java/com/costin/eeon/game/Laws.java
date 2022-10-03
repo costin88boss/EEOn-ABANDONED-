@@ -1,6 +1,6 @@
 package com.costin.eeon.game;
 
-public class  Laws {
+public class Laws {
     public static final String clientVersion = "0.0.1";
     public static final boolean skipSplash = true;
     public static final double physicsMSPerTick = 10;

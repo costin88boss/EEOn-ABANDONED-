@@ -58,12 +58,12 @@ public class BlockManager {
         singleton = this;
     }
 
-    public int getBrickCount() {
-        return brickCount;
-    }
-
     public static BlockManager getInstance() {
         return singleton;
+    }
+
+    public int getBrickCount() {
+        return brickCount;
     }
 
     private void generateBlocks() {

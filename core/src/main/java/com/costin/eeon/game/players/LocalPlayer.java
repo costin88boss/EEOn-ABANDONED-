@@ -11,7 +11,7 @@ import com.costin.eeon.net.packets.player.updates.clientside.PlayerUpdatePacket;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class  LocalPlayer extends Player {
+public class LocalPlayer extends Player {
 
     private static LocalPlayer instance;
     private final Vector2 camPos = new Vector2();

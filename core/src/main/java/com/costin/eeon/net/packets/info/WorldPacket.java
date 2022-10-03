@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 import java.util.List;
 
-public class  WorldPacket {
+public class WorldPacket {
     public List<BlockGroupPacket> blocks;
     public String owner;
     public String title;

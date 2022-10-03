@@ -10,7 +10,7 @@ import com.costin.eeon.game.world.items.ItemId;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class  SmileyManager {
+public class SmileyManager {
 
     private static SmileyManager singleton;
 
@@ -311,7 +311,7 @@ public class  SmileyManager {
         TextureRegion[] goldenTextureRegions = new TextureRegion[6];
         for (int i = 0; i < 6; i++) {
             textureRegions[i] = new TextureRegion(aurasStaff, i * 64, staffAuraI * 64, 64, 64);
-            goldenTextureRegions[i] = new TextureRegion(aurasStaff, (i+6) * 64, staffAuraI * 64, 64, 64);
+            goldenTextureRegions[i] = new TextureRegion(aurasStaff, (i + 6) * 64, staffAuraI * 64, 64, 64);
         }
         aura.animation = new Animation<>(0.25f / 2, textureRegions);
         aura.animation.setPlayMode(Animation.PlayMode.LOOP);
@@ -326,7 +326,7 @@ public class  SmileyManager {
     private void addAuraShape(int id, String name, Texture originalTexture, String payVaultID, int frames, float speed, boolean createRotationAnimation, boolean generate) {
         auraCount++;
         int tempI = auraImagesI;
-        if(!generate) auraImagesI = 0;
+        if (!generate) auraImagesI = 0;
         Aura aura = new Aura();
         aura.texture = new TextureRegion(originalTexture, auraImagesI * 64, 0, 64, 64);
         aura.goldenTexture = new TextureRegion(originalTexture, auraImagesI * 64, 64, 64, 64);
@@ -344,7 +344,7 @@ public class  SmileyManager {
             aura.goldenAnimation.setPlayMode(Animation.PlayMode.LOOP);
         }
         auraImagesI = tempI;
-        if(generate) auraImagesI += frames;
+        if (generate) auraImagesI += frames;
         aura.name = name;
         aura.vaultID = payVaultID;
         auraShapes.put(id, aura);

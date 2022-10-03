@@ -4,7 +4,7 @@ import com.costin.eeon.Main;
 import com.costin.eeon.game.GameObject;
 import com.dongbat.jbump.World;
 
-public class  WorldManager {
+public class WorldManager {
     private static WorldManager singleton;
     public EEWorld EEWorld;
     public World<GameObject> collWorld;
