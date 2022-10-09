@@ -57,8 +57,7 @@ public class JoinLeaveListener implements Listener {
             if (GameClient.hasJoined) return;
             WorldManager.getInstance().collWorld.reset();
             WorldManager.getInstance().EEWorld.reset();
-            WorldManager.getInstance().collWorld.add(LocalPlayer.getInstance(), packet.x + 1, packet.y + 1, 14, 14);
-            WorldManager.getInstance().collWorld.add(LocalPlayer.getInstance().innerCollision, packet.x, packet.y + 1, 16, 15);
+            WorldManager.getInstance().collWorld.add(LocalPlayer.getInstance(), packet.x, packet.y, 16, 16);
             WorldManager.getInstance().collWorld.add(LocalPlayer.getInstance().actionCollision, packet.x - 6, packet.y - 6, 12, 12);
             PlayerManager.getInstance().players.clear();
             LocalPlayer.getInstance().setLocalUsername(packet.newUsername);
@@ -80,8 +79,7 @@ public class JoinLeaveListener implements Listener {
             WorldManager.getInstance().EEWorld.blocks.addAll(blockGroups);
             packet.players.forEach((integer, playerPacket) -> {
                 Player ply = new Player(playerPacket.username);
-                WorldManager.getInstance().collWorld.add(ply, packet.x + 1, packet.y + 1, 14, 14);
-                WorldManager.getInstance().collWorld.add(ply.innerCollision, packet.x + 2, packet.y + 2, 12, 12);
+                WorldManager.getInstance().collWorld.add(ply, packet.x, packet.y, 16, 16);
                 WorldManager.getInstance().collWorld.add(ply.actionCollision, packet.x - 6, packet.y - 6, 12, 12);
                 ply.setLocalVelocity(playerPacket.vX, playerPacket.vY);
                 ply.setLocalPosition(playerPacket.x, playerPacket.y);
@@ -98,8 +96,7 @@ public class JoinLeaveListener implements Listener {
         if (object instanceof PlayerJoinPacket) {
             PlayerJoinPacket packet = (PlayerJoinPacket) object;
             Player ply = new Player(packet.username);
-            WorldManager.getInstance().collWorld.add(ply, packet.x + 1, packet.y + 1, 14, 14);
-            WorldManager.getInstance().collWorld.add(ply.innerCollision, packet.x + 2, packet.y + 2, 12, 12);
+            WorldManager.getInstance().collWorld.add(ply, packet.x, packet.y, 16, 16);
             WorldManager.getInstance().collWorld.add(ply.actionCollision, packet.x - 6, packet.y - 6, 12, 12);
             ply.setLocalVelocity(0, 0);
             ply.setLocalPosition(packet.x, packet.y);
@@ -117,7 +114,6 @@ public class JoinLeaveListener implements Listener {
                 Log.error("eeon", "unknown player left, id: " + packet.playerID);
             } else {
                 WorldManager.getInstance().collWorld.remove(ply);
-                WorldManager.getInstance().collWorld.remove(ply.innerCollision);
                 WorldManager.getInstance().collWorld.remove(ply.actionCollision);
                 Log.info("eeon", ply.getUsername() + " has left!");
             }

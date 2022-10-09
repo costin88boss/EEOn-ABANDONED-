@@ -24,7 +24,6 @@ public class Player extends GameObject {
     private static final float serverFixSpeed = 0.1f;
     private final Vector2 serverPos;
     public Item<GameObject> actionCollision;
-    public Item<GameObject> innerCollision;
     protected float diffX, diffY;
     protected boolean isGrounded, hitCeiling, stuckInBlock;
     boolean oldPacket;
@@ -46,7 +45,6 @@ public class Player extends GameObject {
         super();
         movePacket = new ServerMovePacket();
         actionCollision = new Item<>(this);
-        innerCollision = new Item<>(this);
         auraColor = Color.WHITE.cpy();
         setLocalAura(0);
         setLocalUsername(username);
@@ -171,7 +169,7 @@ public class Player extends GameObject {
             serverPos.add(x * serverFixSpeed, y * serverFixSpeed);
             diffX = movePacket.vXDiff;
             diffY = movePacket.vYDiff;
-            WorldManager.getInstance().collWorld.update(this, x + 1, y + 1);
+            WorldManager.getInstance().collWorld.update(this, x, y);
         } else {
             diffX = movePacket.vXDiff;
             if (hasGodMode) {
@@ -221,9 +219,9 @@ public class Player extends GameObject {
                 vY = 0;
             }
 
-            stuckInBlock = false;
+            boolean stuckInBlock = false;
             if (!hasGodMode) {
-                Response.Result res = WorldManager.getInstance().collWorld.move(this, x + vX + 1, y + vY + 1, CollFilter.getInstance().blockFilter);
+                Response.Result res = WorldManager.getInstance().collWorld.move(this, x + vX, y + vY, CollFilter.getInstance().blockFilter);
                 boolean canGround = false;
                 for (int i = 0; i < res.projectedCollisions.size(); i++) {
                     Collision coll = res.projectedCollisions.get(i);
@@ -255,8 +253,8 @@ public class Player extends GameObject {
             Rect rect = WorldManager.getInstance().collWorld.getRect(this);
             float _x, _y;
             if (!hasGodMode && !stuckInBlock) {
-                _x = rect.x - 1;
-                _y = rect.y - 1;
+                _x = rect.x;
+                _y = rect.y;
             } else {
                 _x = x;
                 _y = y;
@@ -311,6 +309,7 @@ public class Player extends GameObject {
                 moving = true;
             } else if (diffY < 0.1 && diffY > -0.1) {
                 float ty = getCorrectY() % 16;
+
                 if (ty < 2) {
                     if (ty < .2) {
                         y = (int) y;
